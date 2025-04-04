@@ -1,0 +1,42 @@
+ easyMAC internal (H) control variables
+
+ H601     | Interpolator comport 
+ H602     | Interpolator baudrate
+ H604     | Interpolator clock frequency
+ H605     | Interpolator feed register
+ H606     | Interpolator steps per in
+ H607     | Interpolator steps per mm
+ H608     | Interpolator arc tolerace
+
+ H700     | G54 coordinate system origin x
+ H701     | G54 coordinate system origin y
+ H702     | G54 coordinate system origin z
+ H710     | G55 coordinate system origin x
+ H711     | G55 coordinate system origin y
+ H712     | G55 coordinate system origin z
+ H720     | G56 coordinate system origin x
+ H721     | G56 coordinate system origin y
+ H722     | G56 coordinate system origin z
+ H730     | G57 coordinate system origin x
+ H731     | G57 coordinate system origin y
+ H732     | G57 coordinate system origin z
+ H740     | G58 coordinate system origin x
+ H741     | G58 coordinate system origin y
+ H742     | G58 coordinate system origin z
+ H750     | G59 coordinate system origin x
+ H751     | G59 coordinate system origin y
+ H752     | G59 coordinate system origin z
+ H760     | Global origin offset x
+ H761     | Global origin offset y
+ H762     | Global origin offset z
+
+ H800     | Tool 1 offset x 
+ H801     | Tool 1 offset y
+ H802     | Tool 1 offset x
+ H803     | Tool 1 radius
+ H810     | Tool 2 offset x
+ H811     | Tool 2 offset y
+ H812     | Tool 2 offset x
+ H813     | Tool 2 radius
+
+>

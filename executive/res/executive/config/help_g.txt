@@ -1,0 +1,35 @@
+ easyMAC NC interpreter codes
+
+ Type '$' before the NC command to access the RS-274 interpreter (e.g '$N01 G10 X10 F200').
+ Codes are display according to the order of execution
+
+ N_             		    | set sequence number
+ G93            		    | set feed mode to inverse time
+ G94            		    | set feed mode to units per minuite
+ G95            		    | set feed mode to units per revolution
+ F_             		    | set feed rate in units/min
+ G04            		    | dwell
+ G17            		    | set plane to XY
+ G18            	            | set plane to ZX
+ G19            		    | set plane to YZ
+ G20            		    | set length units to IN
+ G21            		    | set length units to MM
+ G40            		    | disable radius compensation
+ G41    	       		    | set radius compensation to tool left
+ G42            	            | set radius compensation to tool right
+ G43    	       	            | enable length compensation
+ G49    	                    | disable length compensation
+ G54 - G59         		    | set coordinate system
+ G90               		    | set distance mode to absolute
+ G91               		    | set distance mode to relative
+ G92 X_ Y_ Z_      		    | set origin offset to X_ Y_ Z
+ G92               		    | calulates the origin offsets that make the actual position X0 Y0 Z0
+ G00               		    | set motion mode rapid
+ G00 X_ Y_ Z_       		    | move rapid to X_ Y_ Z_ 
+ G01               		    | set motion mode to linear
+ G01 X_ Y_ Z_ F_    		    | move linear to X_ Y_ Z_ at feed F 
+ G02               		    | set motion mode to multi-quadrant cw circular
+ G02 X/Z/Y_ Y/X/Z_ I/K/J_ J/I/K_ F_ | move cw circular to X_ Y_ Z_ with center I/K/J_ J/I/K_ feed F 
+ G03 X/Z/Y_ Y/X/Z_ I/K/J_ J/I/K_ F_ | move ccw circular to X_ Y_ Z_ with center I/K/J_ J/I/K_ feed F      
+
+>

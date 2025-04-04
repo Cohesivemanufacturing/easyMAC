@@ -1,0 +1,14 @@
+mtllib virtualMAC.mtl
+o VirtualMAC
+v -0.8 -0.6 0.0
+v -0.8 0.6 0.0
+v 0.8 -0.6 0.0
+v 0.8 0.6 0.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 1.0
+vt 1.0 0.0
+usemtl None
+s off
+f 4/4 2/2 1/1
+f 1/1 3/3 4/4

@@ -1,0 +1,4 @@
+1. memory error when loosing connection with the interpolator while interpolating. Porgram crashes
+2. memory error when disaling virtualmac while inteprolating. prorgam crashes
+2. chech aknowledge message start and end threads
+3. set virtualmac to intel I7

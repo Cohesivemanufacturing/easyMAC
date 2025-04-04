@@ -1,0 +1,21 @@
+# Ignore Visual Studio files
+# Intellisense files
+*.db
+
+# Compilation files
+*.ilk
+*.pdb
+*.obj
+*.pdb
+*.tlog # Added to ignore .tlog files
+
+# Development local folders
+/Debug
+/.vs
+/Release
+/out
+/x64
+/executive/Debug 
+/executive/Release 
+/executive/x64 
+/executive/glm/out

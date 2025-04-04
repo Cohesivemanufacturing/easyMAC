@@ -1,0 +1,51 @@
+Cloud NC
+
+EasyMAC-executive has a simulator with the NC kernel of a virtual 3-axis milling machine 
+and a native adapter to OSCM client. This functionality allows easyMAC to connect to OSCM 
+client and transmit streams of simulated-machine data to the cloud. The virtual machine 
+controller can be configured to different interpreter, interpolation, and servo parameters 
+by modifying the entries in the file:
+
+.\executive\winX86\res\executive\config\easyMAC.ini
+
+Alternatively, the controller parameters can be configured with easyMAC console commands. 
+(
+ see console commands:
+ > help 
+ > help start
+) 
+
+The cloudnc thread can be started with console command:
+
+> set cloudnc enable
+
+Example 1. Start the cloudnc simulation threat and manually move the virtual machine
+
+> set cloudnc enable     // starts the cloudnc tread and the console with output compiled motion
+> set program test10.nc  // starts the program: .\executive\winX86\res\interpreter\programs\test10.nc   
+> $G01 X10 F400          // move the virtual machine 10 units in the X-direction at a feed of 400 units/min
+
+Example 2. Start cloudnc simulation threat and run a sample NC program
+
+> set cloudnc enable     // starts the cloudnc tread and the console with output compiled motion
+> set program test10.nc  // starts the program: .\executive\winX86\res\interpreter\programs\test10.nc             
+> set program pause      // pauses program execution
+> set program continue   // continues program execution
+> set program stop       // stops program execution
+
+Example 3. Start cloudnc simulation thread, run a sample NC program and 
+connect with OSCM client.
+
+This example requires you to have:
+1. registered a resource in OSCM 
+2. download OSCM client. 
+2. generated the resource configuration and pasted it to:adapters_root_directory/adapter/res/config
+
+in the easyMAC console:
+
+> set cloudnc enable     // starts the cloudnc tread and the console with output compiled motion
+> set program test10.nc  // starts the program: .\executive\winX86\res\interpreter\programs\test10.nc 
+
+start OSCM client and use your user credentials to connect the simulation stream to you resource!
+
+>

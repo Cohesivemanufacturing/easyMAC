@@ -1,0 +1,13 @@
+ToDo
+
+1. initialization protocol for the interpolator
+2. initialization protocol for the axis
+3. homming and G53 seeting
+4. soft resetting of the program; tight to the problem of stoping/pausing 
+   the interpolators
+
+Current issues
+
+1. problems at the moment of interpolating test9.nc
+2. There is not a way from pausing and stoping the interpolator in the
+   middle an interpolating job

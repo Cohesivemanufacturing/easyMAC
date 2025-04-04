@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="resources">
+      <UniqueIdentifier>{e121dbc2-713a-49cc-bd29-aa5ace79f369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\config">
+      <UniqueIdentifier>{51305281-95f7-4385-8027-64a3430d8f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\logs">
+      <UniqueIdentifier>{782cbebd-6d27-49ab-a27e-6dc2b3e5d96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\programs">
+      <UniqueIdentifier>{b2d9ad70-eab0-4090-ad90-ddcdc90af06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Virtual Machine">
+      <UniqueIdentifier>{28753289-8ae4-482d-8f19-1f325489e2fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Virtual Machine\Header Files">
+      <UniqueIdentifier>{530e0c37-2834-429c-8a93-e7f1e7a28421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Virtual Machine\Source Files">
+      <UniqueIdentifier>{3c9150c3-834d-4008-a445-cbb42bb96c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpreter">
+      <UniqueIdentifier>{ef72fab9-f114-4d43-bfa8-7d2ac708a19c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpreter\Source Files">
+      <UniqueIdentifier>{a242a3fa-253a-4dae-b049-0ae7472222b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpreter\Header Files">
+      <UniqueIdentifier>{33b184b2-944f-49c8-b16b-83b9fdf62efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpreter\Lex and Yacc">
+      <UniqueIdentifier>{5b5b2b4a-3985-4c94-9531-466aeb30a230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SerialCOM">
+      <UniqueIdentifier>{fdf45838-52ae-4e70-ac44-75a9d7352038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConsoleLogger">
+      <UniqueIdentifier>{db9072f0-9b33-4df7-a7cf-42e84c2d93d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="executive">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="executive\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="executive\Source Files">
+      <UniqueIdentifier>{51b54b8d-2167-470a-afd8-1cd7e12aa719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{1ac72d7d-0b42-4904-a688-6e58ea09c1d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpolator">
+      <UniqueIdentifier>{aaa2d0f0-b2da-4b04-8d95-a44fb6aed866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="atomic actions">
+      <UniqueIdentifier>{300ab9ad-5e2f-4ab8-ac69-20b9a4d43518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="machine vector">
+      <UniqueIdentifier>{c45ca0c4-42e8-426d-9413-ab6f47021ad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="h variables">
+      <UniqueIdentifier>{29414e1f-f612-4890-b966-9f1f299bd4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="queue">
+      <UniqueIdentifier>{73dd8c05-eabf-4191-bd45-c309c01fbbd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="block vector">
+      <UniqueIdentifier>{4306c3bd-836a-4a80-b030-4680087a66a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modal_vector">
+      <UniqueIdentifier>{b282d417-9766-4d7c-b4eb-6695016fa015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exeparser">
+      <UniqueIdentifier>{010ed337-8fe5-4d4a-a641-98dd5e1056a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exeparser\Lex and Yacc">
+      <UniqueIdentifier>{447fef12-bf52-4ec4-8df7-9eda63efa6b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exeparser\Header Files">
+      <UniqueIdentifier>{d952be47-f1ca-4841-835a-cfa0276680a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exeparser\Source Files">
+      <UniqueIdentifier>{ccee9fc0-5b93-4bb3-908d-da2b15f5eab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parson">
+      <UniqueIdentifier>{1f51c796-b738-4e6f-8251-722589f569b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Winsocket">
+      <UniqueIdentifier>{c1e105b8-5378-4a00-a8a9-e083cc146c5a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="res\interpreter\logs\actions.log">
+      <Filter>resources\logs</Filter>
+    </Text>
+    <Text Include="res\interpreter\logs\history.log">
+      <Filter>resources\logs</Filter>
+    </Text>
+    <Text Include="res\executive\config\easyMAC.txt">
+      <Filter>resources\config</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="display.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="obj_loader.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="virtualMachine.cpp">
+      <Filter>Virtual Machine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interpreter.cpp">
+      <Filter>interpreter\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lex.yy.cpp">
+      <Filter>interpreter\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="yy.tab.cpp">
+      <Filter>interpreter\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="parson.cpp">
+      <Filter>Parson</Filter>
+    </ClCompile>
+    <ClCompile Include="serial.cpp">
+      <Filter>SerialCOM</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleLogger.cpp">
+      <Filter>ConsoleLogger</Filter>
+    </ClCompile>
+    <ClCompile Include="executive.cpp">
+      <Filter>executive\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>executive\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="buffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="interpolator.cpp">
+      <Filter>interpolator</Filter>
+    </ClCompile>
+    <ClCompile Include="atomic_actions.cpp">
+      <Filter>atomic actions</Filter>
+    </ClCompile>
+    <ClCompile Include="queue.cpp">
+      <Filter>queue</Filter>
+    </ClCompile>
+    <ClCompile Include="exeparser.cpp">
+      <Filter>exeparser\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exe.tab.cpp">
+      <Filter>exeparser\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modal_vector.cpp">
+      <Filter>modal_vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Winsocket.cpp">
+      <Filter>Winsocket</Filter>
+    </ClCompile>
+    <ClCompile Include="lex.exe.cpp">
+      <Filter>exeparser\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lex.exe.cpp">
+      <Filter>exeparser\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camara.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="display.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_loader.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="virtualMachine.h">
+      <Filter>Virtual Machine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="executive.h">
+      <Filter>executive\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpreter.h">
+      <Filter>interpreter\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="yy.tab.hpp">
+      <Filter>interpreter\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parson.h">
+      <Filter>Parson</Filter>
+    </ClInclude>
+    <ClInclude Include="serial.h">
+      <Filter>SerialCOM</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleLogger.h">
+      <Filter>ConsoleLogger</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="executive_defs.h">
+      <Filter>executive\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpolator.h">
+      <Filter>interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="interpreter_defs.h">
+      <Filter>interpreter\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="atomic_actions.h">
+      <Filter>atomic actions</Filter>
+    </ClInclude>
+    <ClInclude Include="atomic_actions_defs.h">
+      <Filter>atomic actions</Filter>
+    </ClInclude>
+    <ClInclude Include="machine_vector.h">
+      <Filter>machine vector</Filter>
+    </ClInclude>
+    <ClInclude Include="machine_vector_defs.h">
+      <Filter>machine vector</Filter>
+    </ClInclude>
+    <ClInclude Include="h_variables.h">
+      <Filter>h variables</Filter>
+    </ClInclude>
+    <ClInclude Include="h_variables_defs.h">
+      <Filter>h variables</Filter>
+    </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>queue</Filter>
+    </ClInclude>
+    <ClInclude Include="block_vector.h">
+      <Filter>block vector</Filter>
+    </ClInclude>
+    <ClInclude Include="modal_vector.h">
+      <Filter>modal_vector</Filter>
+    </ClInclude>
+    <ClInclude Include="modal_vector_defs.h">
+      <Filter>modal_vector</Filter>
+    </ClInclude>
+    <ClInclude Include="interpolator_parameters.h">
+      <Filter>interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="exeparser.h">
+      <Filter>exeparser\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exe.tab.hpp">
+      <Filter>exeparser\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="machine_vector_types.h">
+      <Filter>machine vector</Filter>
+    </ClInclude>
+    <ClInclude Include="modal_vector_types.h">
+      <Filter>modal_vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Winsocket.h">
+      <Filter>Winsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="exeparser_defs.h">
+      <Filter>exeparser\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\interpreter\programs\test1.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test2.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test3.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test4.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test5.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test6.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test7.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test8.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test9.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test10.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\interpreter\programs\test0.nc">
+      <Filter>resources\programs</Filter>
+    </None>
+    <None Include="res\executive\config\easyMAC.ini">
+      <Filter>resources\config</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Interpreter.l">
+      <Filter>interpreter\Lex and Yacc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="exeparser.y">
+      <Filter>exeparser\Lex and Yacc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Interpreter.y">
+      <Filter>interpreter\Lex and Yacc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="exeparser.l">
+      <Filter>exeparser\Lex and Yacc</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\executive\easyMAC.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

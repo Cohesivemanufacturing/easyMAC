@@ -1,0 +1,37 @@
+Welcome to easyMAC executive!
+
+easyMAC executive is a PC-based program, coded in C++, in charge of executing the 
+non-real-time services of the architecture such as processing of manual instructions 
+and overrides, parsing and interpretation of G-codes (RS-274), and setting of motion 
+and servo-loop configuration parameters. It's multi-thread architecture allows it to 
+coordinate the execution of real-time services such as interpolation, PLC, management 
+of virtual machines and troubleshooting.
+
+######################## easyMAC commands ############################################
+easyMAC executive has an interpreter for easyMAC commands, used to access help dialogs, 
+set controller configuration parameters and enable or disable threads such as 
+interpolation, program execution and virtual machines. easyMAC command are also used 
+to get state variables such as machine state vector and last-generated atomic actions
+
+to get started with the basic easyMAC commands, use the console command :
+> help
+
+Example 1. Change the distance mode to absolute and get the machine state vector 
+
+> set distance_mode abs    // sets the distance mode to absolute
+> get machine_vector       // gets the state vector of the machine
+
+######################## easyMAC interpreter ##########################################
+easyMAC has an RS-274 own interpreter to translate part programs and manual commands
+into internal commands.  To enable easyMAC interpreter mode, type the character '$' 
+in the console before the G-code instruction block.
+
+
+Example 2. Change the distance mode to absolute and get the machine state vector 
+
+> set actions_log enable   // enable logging of atomic actions in the controller 
+> $ G01 X10 F400           // move the machine 10 units in the X-direction at a feed of 400 units/min 
+> get atomic_actions       // get the latest command generated atomic actions
+> get machine_vector       // gets the state vector of the machine 
+
+> 

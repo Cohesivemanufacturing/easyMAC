@@ -1,0 +1,18 @@
+/**************************************************************
+Arduino-platform compatibility changes
+***************************************************************/
+1. Winsocket.h
+- Line 44: deleted send buffer
+
+2. serial.h
+- Line 34: includes baud parameter in constructor Serial(char *portName, int baud);
+
+serial.cpp
+- line 76: dcbSerialParams.BaudRate = baud
+
+3. included exeparser command: set interpolator max_frequency (number)
+
+
+
+
+
