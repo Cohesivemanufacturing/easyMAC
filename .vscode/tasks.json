@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build with NMake (Debug)",
+        "type": "shell",
+        "command": "cmd.exe",
+        "args": [
+          "/c",
+          "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\Tools\\VsDevCmd.bat\" && cmake -G \"NMake Makefiles\" -DCMAKE_BUILD_TYPE=Debug ../.. && nmake"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/build/Debug",
+          "shell": {
+            "executable": "cmd.exe",
+            "args": ["/d", "/c"]
+          }
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Build with NMake (Release)",
+        "type": "shell",
+        "command": "cmd.exe",
+        "args": [
+          "/c",
+          "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\Tools\\VsDevCmd.bat\" && cmake -G \"NMake Makefiles\" -DCMAKE_BUILD_TYPE=Release ../.. && nmake"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/build/Release",
+          "shell": {
+            "executable": "cmd.exe",
+            "args": ["/d", "/c"]
+          }
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+  

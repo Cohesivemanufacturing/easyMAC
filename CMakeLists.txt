@@ -1,21 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(Executive)
 
-# Set the C and C++ compiler paths to target x86 architecture
-set(CMAKE_C_COMPILER "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx86/x86/cl.exe")
-set(CMAKE_CXX_COMPILER "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx86/x86/cl.exe")
-
-# Set the linker to target x86 architecture
-set(CMAKE_LINKER "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx86/x86/link.exe")
-
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# Ensure CMake targets x86 architecture
+# Target x86 architecture
 set(CMAKE_GENERATOR_PLATFORM x86)
-
-# Compiler and linker flags for x86 architecture
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:x86")
 
 # Include Directories for External Libraries
 include_directories(
@@ -23,13 +13,13 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/executive/glew-2.0.0/include
     ${CMAKE_SOURCE_DIR}/executive/glm
     ${CMAKE_SOURCE_DIR}/executive/SDL2/include
-    ${CMAKE_SOURCE_DIR}/executive  # Ensure the 'executive' directory is also included
+    ${CMAKE_SOURCE_DIR}/executive
 )
 
-# Link Directories for External Libraries (x86)
+# Link Directories
 link_directories(
-    ${CMAKE_SOURCE_DIR}/executive/freeglut/lib/x86
-    ${CMAKE_SOURCE_DIR}/executive/glew-2.0.0/lib/x86
+    ${CMAKE_SOURCE_DIR}/executive/freeglut/lib
+    ${CMAKE_SOURCE_DIR}/executive/glew-2.0.0/lib/Release/Win32
     ${CMAKE_SOURCE_DIR}/executive/SDL2/lib/x86
 )
 
@@ -58,65 +48,50 @@ set(SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/executive/Winsocket.cpp
 )
 
-# Bison and Flex Integration for Executive Parser
+# Flex/Bison Setup
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 
-# Set up build directories for generated files
 set(EXECUTIVE_BINARY_DIR ${CMAKE_BINARY_DIR}/executive)
-
-# Ensure build directories exist
 file(MAKE_DIRECTORY ${EXECUTIVE_BINARY_DIR})
 
-# Executive Parser - Yacc
 add_custom_command(
     OUTPUT ${EXECUTIVE_BINARY_DIR}/exe.tab.cpp
     COMMAND ${BISON_EXECUTABLE} -dy -o ${EXECUTIVE_BINARY_DIR}/exe.tab.cpp ${CMAKE_SOURCE_DIR}/executive/exeparser.y
     DEPENDS ${CMAKE_SOURCE_DIR}/executive/exeparser.y
-    COMMENT "Generating exe.tab.cpp from exeparser.y"
-    VERBATIM
 )
 list(APPEND SOURCE_FILES ${EXECUTIVE_BINARY_DIR}/exe.tab.cpp)
 
-# Executive Parser - Lex
 add_custom_command(
     OUTPUT ${EXECUTIVE_BINARY_DIR}/lex.exe.cpp
     COMMAND ${FLEX_EXECUTABLE} -o ${EXECUTIVE_BINARY_DIR}/lex.exe.cpp ${CMAKE_SOURCE_DIR}/executive/exeparser.l
     DEPENDS ${CMAKE_SOURCE_DIR}/executive/exeparser.l ${EXECUTIVE_BINARY_DIR}/exe.tab.cpp
-    COMMENT "Generating lex.exe.cpp from exeparser.l"
-    VERBATIM
 )
 list(APPEND SOURCE_FILES ${EXECUTIVE_BINARY_DIR}/lex.exe.cpp)
 
-# NC-Interpreter parser - Yacc
 add_custom_command(
     OUTPUT ${EXECUTIVE_BINARY_DIR}/yy.tab.cpp
     COMMAND ${BISON_EXECUTABLE} -dy -o ${EXECUTIVE_BINARY_DIR}/yy.tab.cpp ${CMAKE_SOURCE_DIR}/executive/Interpreter.y
     DEPENDS ${CMAKE_SOURCE_DIR}/executive/Interpreter.y
-    COMMENT "Generating yy.tab.cpp from Interpreter.y"
-    VERBATIM
 )
 list(APPEND SOURCE_FILES ${EXECUTIVE_BINARY_DIR}/yy.tab.cpp)
 
-# NC-Interpreter parser - Lex
 add_custom_command(
     OUTPUT ${EXECUTIVE_BINARY_DIR}/lex.yy.cpp
     COMMAND ${FLEX_EXECUTABLE} -o ${EXECUTIVE_BINARY_DIR}/lex.yy.cpp ${CMAKE_SOURCE_DIR}/executive/Interpreter.l
     DEPENDS ${CMAKE_SOURCE_DIR}/executive/Interpreter.l ${EXECUTIVE_BINARY_DIR}/yy.tab.cpp
-    COMMENT "Generating lex.yy.cpp from Interpreter.l"
-    VERBATIM
 )
 list(APPEND SOURCE_FILES ${EXECUTIVE_BINARY_DIR}/lex.yy.cpp)
 
-# Executable Target
+# Executable
 add_executable(executive ${SOURCE_FILES})
 
-# Link External Libraries (x86)
+# Link External Libraries
 target_link_libraries(executive
-    ${CMAKE_SOURCE_DIR}/executive/freeglut/lib/freeglut.lib
-    ${CMAKE_SOURCE_DIR}/executive/glew-2.0.0/lib/Release/Win32/glew32.lib
-    ${CMAKE_SOURCE_DIR}/executive/SDL2/lib/x86/SDL2main.lib
-    ${CMAKE_SOURCE_DIR}/executive/SDL2/lib/x86/SDL2.lib
+    freeglut.lib
+    glew32.lib
+    SDL2main.lib
+    SDL2.lib
     OpenGL32.lib
     kernel32.lib
     user32.lib
@@ -132,14 +107,14 @@ target_link_libraries(executive
     odbccp32.lib
 )
 
-# Compiler Options for Release Build
+# Compiler Flags
 target_compile_options(executive PRIVATE
-    $<$<CONFIG:Release>:/O2>
-    $<$<CONFIG:Release>:/MT>
+    $<$<CONFIG:Release>:/O2 /MT /GS- /W3 /Zc:wchar_t /Gm- /Zc:inline /fp:precise /DWIN32 /DNDEBUG /D_CONSOLE /Zc:forScope /Gd /Oy /FC /EHsc /nologo /diagnostics:column>
+    $<$<CONFIG:Debug>:/Od /MDd /GS /ZI /RTC1 /W3 /Zc:wchar_t /Gm- /Zc:inline /fp:precise /DWIN32 /D_DEBUG /D_CONSOLE /Zc:forScope /Gd /Oy- /FC /EHsc /nologo /JMC /diagnostics:column>
 )
 
-# Linker Options for Release Build
+# Linker Flags
 target_link_options(executive PRIVATE
-    $<$<CONFIG:Release>:/LTCG:incremental>
-    $<$<CONFIG:Release>:/OPT:REF>
+    $<$<CONFIG:Release>:/SUBSYSTEM:CONSOLE /INCREMENTAL:NO /OPT:REF /LTCG /DEBUG>
+    $<$<CONFIG:Debug>:/SUBSYSTEM:CONSOLE /DEBUG /INCREMENTAL>
 )

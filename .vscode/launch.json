@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug (NMake) - Debug",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/Debug/executive.exe", 
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/build/Debug",
+        "environment": [],
+        "externalConsole": true,
+        "preLaunchTask": "Build with NMake (Debug)",  // Referencing the Debug task from tasks.json
+        // Removed invalid property "miDebuggerPath"
+        // Removed invalid property "miDebuggerArgs"
+      },
+      {
+        "name": "Release (NMake) - Release",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/Release/executive.exe", 
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/build/Release",
+        "environment": [],
+        "externalConsole": false,
+        // Removed invalid property "setupCommands"
+        "preLaunchTask": "Build with NMake (Release)",  // Referencing the Release task from tasks.json
+        // Removed invalid property "miDebuggerPath"
+      }
+    ]
+  }
