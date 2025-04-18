@@ -57,6 +57,11 @@ Machine_vector  *Exeparser::machine_vector = NULL;
 Atomic_action  **Exeparser::action_in = NULL;
 Atomic_action  **Exeparser::action_out = NULL;
 
+// (action_in) = points to pointer to the current action
+// *(action_in) = points to current action
+// **(action_in) = current action
+
+
 // Executive-parser public services
 
 Exeparser* Exeparser::initExeparser(H_variables *variables, Modal_vector *modal, Machine_vector *machine, 
@@ -117,28 +122,6 @@ void Exeparser::setActionsLogAction(char* stat)
 	{
 		(*action_in)->action = SET_ACTIONS_LOG;
 		(*action_in)->mode = ACTION_LOG_DISABLE;
-		(*action_in) = add_action((*action_in));
-	}
-
-	else
-	{
-		error(ERR_PARAMETR);
-	}
-}
-
-void Exeparser::setHistoryLogAction(char* stat)
-{
-	if (strncmp(stat, "enable", 5) == 0)
-	{
-		(*action_in)->action = SET_HISTORY_LOG;
-		(*action_in)->mode = HISTORY_LOG_ENABLE;
-		(*action_in) = add_action((*action_in));
-	}
-
-	else if (strncmp(stat, "disable", 6) == 0)
-	{
-		(*action_in)->action = SET_HISTORY_LOG;
-		(*action_in)->mode = HISTORY_LOG_DISABLE;
 		(*action_in) = add_action((*action_in));
 	}
 

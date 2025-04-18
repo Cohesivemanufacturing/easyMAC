@@ -1,6 +1,10 @@
 //#include "stdafx.h"
 
 #include "virtualMachine.h"
+#include <sstream> // Include for stringstream
+#include <iostream> // Include for std::cerr
+#include <filesystem> // Include for directory management
+#include <iomanip> // Include for std::hex and std::setw
 
 /**************************************************************
 Static functions outside the class
@@ -156,11 +160,12 @@ Machine object
 ***************************************************************/
 // virtual machine public services
 
-VirtualMachine::VirtualMachine(Winsocket *socket)
+VirtualMachine::VirtualMachine(Winsocket *socket) :
+	m_logFileBaseName("./out/motion_log"), // Base name for log files, now with directory
+	m_logFileIndex(0),
+	m_currentFileSize(0),
+	cloudNCsocket(socket) // Initialize cloudNCsocket here
 {
-	// bind windows socket for cloudNC
-	this->cloudNCsocket = cloudNCsocket;
-
 	// create machine joints
 	Joint x = Joint();
 	x.jointIndex = 0;
@@ -186,17 +191,20 @@ VirtualMachine::VirtualMachine(Winsocket *socket)
 
 	// initializes the circular buffers 
 	buffer = new Buffer();
+
+	OpenNewLogFile(); // Call OpenNewLogFile AFTER m_logFileBaseName is initialized
 }
 
-VirtualMachine::VirtualMachine(const std::string& fileName, Display* display, Shader* shader, Camara* camara)
+VirtualMachine::VirtualMachine(const std::string& fileName, Display* display, Shader* shader, Camara* camara) :
+	m_logFileBaseName("./out/motion_log"), // Base name for log files, now with directory
+	m_logFileIndex(0),
+	m_currentFileSize(0),
+	m_display(display), // Initialize m_display here
+	m_shader(shader),   // Initialize m_shader here
+	m_camara(camara)     // Initialize m_camara here
 {
 	// initialize virtual machine
 	InitVirtualMechanism(fileName);
-
-	// bind openGL enviroment
-	m_display = display;
-	m_shader = shader;
-	m_camara = camara;
 
 	// default options for virtual machine constructor
 	m_isSDL = true;
@@ -204,10 +212,16 @@ VirtualMachine::VirtualMachine(const std::string& fileName, Display* display, Sh
 
 	// initializes the circular buffers 
 	buffer = new Buffer();
+
+	OpenNewLogFile(); // Call OpenNewLogFile AFTER m_logFileBaseName is initialized
 }
 
 VirtualMachine::~VirtualMachine()
 {
+	if (m_logFileStream.is_open()) {
+		m_logFileStream.close();
+	}
+
 	// delete meshes
 	for (std::vector<Mesh*>::iterator mesh_it = this->meshes.begin(); mesh_it != this->meshes.end(); ++mesh_it)
 	{
@@ -683,101 +697,103 @@ void VirtualMachine::calcTransforms()
 */
 void VirtualMachine::Interpolate(InterpolatorParameters &parameters, StepDirections &stepDir)
 {
-	// notify the virtualMachine start of interpolation
-	this->m_isInterpolating = true;
+    // notify the virtualMachine start of interpolation
+    this->m_isInterpolating = true;
 
-	/* encoded bit */
-	int encoded_bit;
+    /* encoded bit */
+    int encoded_bit;
 
-	/* q registers DDAs*/
-	int qx = 0;
-	int qy = 0;
-	int qz = 0;
-	int qf = 0;
+    /* q registers DDAs*/
+    int qx = 0;
+    int qy = 0;
+    int qz = 0;
+    int qf = 0;
 
-	int qr = 0;
+    int qr = 0;
 
-	/* initialize output counters */
-	int outx = 0;
-	int outy = 0;
-	int outz = 0;
+    /* initialize output counters */
+    int outx = 0;
+    int outy = 0;
+    int outz = 0;
 
-	/* Circular and Linear DDA interpolation scheme */
-	while (parameters.xtarget - outx > m_actTol || parameters.ytarget - outy > m_actTol || parameters.ztarget - outz > m_actTol)
-	{
-		/*interpolation ISR*/
-		encoded_bit = 0;                                                // reset the encoded bit.
-		qf = qf + parameters.pf;									    // update the q register of render DDA
-		if (qf >= m_fmax) {
-			qf = qf %  m_fmax;											// reset the q-resister
-			qx = qx + parameters.px;									// update the q register of the x axis DDA
-			qy = qy + parameters.py;								    // update the q register of the y axis DDA
-			qz = qz + parameters.pz;
-			if (qx >= parameters.steplim || qy >= parameters.steplim ||
-				qz >= parameters.steplim) {								// if the q register of one of these DDAs overflowed
-				if (qx >= parameters.steplim) {						    // if it was the x-register
-					qx = qx % parameters.steplim;						// reset the q-resister
-					if (parameters.CB) parameters.py--;				    // if circulat bit is on (inversion bit IB calc. outside the loop)
-					if (parameters.xtarget > outx) {					// if target not reached 																
-						stepDir.stepx->jointPos += stepDir.stepx->JointDir;  // take a step according to the inverison bit IB
-						outx++;
-						encoded_bit = encoded_bit | stepDir.stepx->positionBitValue;
-						if (stepDir.stepx->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepx->directionBitValue;
-					}
-				}
-				if (qy >= parameters.steplim) {                         // if it was the x-register
-					qy = qy % parameters.steplim;                       // do the same..
-					if (parameters.CB) parameters.px++;
-					if (parameters.ytarget > outy) {
-						stepDir.stepy->jointPos += stepDir.stepy->JointDir;
-						outy++;
-						encoded_bit = encoded_bit | stepDir.stepy->positionBitValue;
-						if (stepDir.stepy->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepy->directionBitValue;
-					}
-				}
-				if (qz >= parameters.steplim) {                         // if it was the z-register
-					qz = qz % parameters.steplim;                       // do the same..
-					if (parameters.ztarget > outz) {
-						stepDir.stepz->jointPos += stepDir.stepz->JointDir;
-						outz++;
-						encoded_bit = encoded_bit | stepDir.stepz->positionBitValue;
-						if (stepDir.stepz->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepz->directionBitValue;
-					}
-				}
-			}
+    /* Circular and Linear DDA interpolation scheme */
+    while (parameters.xtarget - outx > m_actTol || parameters.ytarget - outy > m_actTol || parameters.ztarget - outz > m_actTol)
+    {
+        /*interpolation ISR*/
+        encoded_bit = 0;                                                // reset the encoded bit.
+        qf = qf + parameters.pf;									    // update the q register of render DDA
+        if (qf >= m_fmax) {
+            qf = qf %  m_fmax;											// reset the q-resister
+            qx = qx + parameters.px;									// update the q register of the x axis DDA
+            qy = qy + parameters.py;								    // update the q register of the y axis DDA
+            qz = qz + parameters.pz;
+            if (qx >= parameters.steplim || qy >= parameters.steplim ||
+                qz >= parameters.steplim) {								// if the q register of one of these DDAs overflowed
+                if (qx >= parameters.steplim) {						    // if it was the x-register
+                    qx = qx % parameters.steplim;						// reset the q-resister
+                    if (parameters.CB) parameters.py--;				    // if circulat bit is on (inversion bit IB calc. outside the loop)
+                    if (parameters.xtarget > outx) {					// if target not reached 																
+                        stepDir.stepx->jointPos += stepDir.stepx->JointDir;  // take a step according to the inverison bit IB
+                        outx++;
+                        encoded_bit = encoded_bit | stepDir.stepx->positionBitValue;
+                        if (stepDir.stepx->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepx->directionBitValue;
+                    }
+                }
+                if (qy >= parameters.steplim) {                         // if it was the x-register
+                    qy = qy % parameters.steplim;                       // do the same..
+                    if (parameters.CB) parameters.px++;
+                    if (parameters.ytarget > outy) {
+                        stepDir.stepy->jointPos += stepDir.stepy->JointDir;
+                        outy++;
+                        encoded_bit = encoded_bit | stepDir.stepy->positionBitValue;
+                        if (stepDir.stepy->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepy->directionBitValue;
+                    }
+                }
+                if (qz >= parameters.steplim) {                         // if it was the z-register
+                    qz = qz % parameters.steplim;                       // do the same..
+                    if (parameters.ztarget > outz) {
+                        stepDir.stepz->jointPos += stepDir.stepz->JointDir;
+                        outz++;
+                        encoded_bit = encoded_bit | stepDir.stepz->positionBitValue;
+                        if (stepDir.stepz->JointDir == -1) encoded_bit = encoded_bit | stepDir.stepz->directionBitValue;
+                    }
+                }
+            }
 
-		}
-		// there is a lot we can do with the just-computed motion..
-		if (m_isSDL) {
-			qr++;
-			if (qr >= m_rmax)
-			{														// render after a number 2^N/pf of cycles of the DDA algorithm.  
-				qr = qr % m_rmax;									// reset the velocty q-resister 
-				m_display->GetEvents();
-				Render();
-			}
-		}
+        }
+        // there is a lot we can do with the just-computed motion..
+        if (m_isSDL) {
+            qr++;
+            if (qr >= m_rmax)
+            {														// render after a number 2^N/pf of cycles of the DDA algorithm.  
+                qr = qr % m_rmax;									// reset the velocty q-resister 
+                m_display->GetEvents();
+                Render();
+            }
+        }
 
-		if (m_isCloudNC) 
-		{
-			// an oportunity to slow down the output stream
-			qr++;
-			if (qr >= m_rmax)
-			{														
-				qr = qr % m_rmax;		
-				Sleep(20); 
-				
-			}
-			
-			// build the motion string word
-			std::string word = std::to_string(encoded_bit) + "|";
-			// plot to the console
-			vmConsole->printf("%s", word.c_str());
-		}
-	}
+        if (m_isCloudNC)
+        {
+            // an oportunity to slow down the output stream
+            // qr++;
+            // if (qr >= m_rmax)
+            // {
+            // 	qr = qr % m_rmax;
+            // 	Sleep(20);
+            // }
 
-	// notify the virtualMachine end of interpolation
-	this->m_isInterpolating = false;
+            // Convert the encoded bit to a 2-digit hexadecimal string
+            std::stringstream hexStream;
+            hexStream << std::hex << std::setw(2) << std::setfill('0') << encoded_bit;
+            std::string hexWord = hexStream.str();
+
+            // Log the motion data to the file
+            LogMotionData(hexWord);
+        }
+    }
+
+    // notify the virtualMachine end of interpolation
+    this->m_isInterpolating = false;
 }
 
 InterpolatorParameters VirtualMachine::LoadInterpolator(char* block)
@@ -910,6 +926,54 @@ void VirtualMachine::Ready()
 	// updates the tail pointer
 	//m_countout = (m_countout + 1) % (MAX_BUF);
 
+}
+
+void VirtualMachine::OpenNewLogFile() {
+    if (m_logFileStream.is_open()) {
+        m_logFileStream.close();
+    }
+
+    // Delete existing files with the same base name
+    std::string filePattern = m_logFileBaseName + "_*.txt";
+    for (const auto& entry : std::filesystem::directory_iterator("./out/")) {
+        if (entry.is_regular_file()) {
+            std::string filename = entry.path().filename().string();
+            if (filename.rfind(m_logFileBaseName, 0) == 0) {
+                std::filesystem::remove(entry.path());
+            }
+        }
+    }
+
+    std::stringstream ss;
+    ss << m_logFileBaseName << "_" << m_logFileIndex << ".txt";
+    std::string fileName = ss.str();
+
+    m_logFileStream.open(fileName, std::ios::app); // Open in append mode
+    if (!m_logFileStream.is_open()) {
+        std::cerr << "Error opening log file: " << fileName << std::endl;
+        // Consider more robust error handling here (e.g., throw an exception)
+    }
+    else {
+        std::cout << "Opened new log file: " << fileName << std::endl << std::endl;
+    }
+
+    m_currentFileSize = 0; // Reset file size
+    m_logFileIndex++;      // Increment index for the next file
+}
+
+void VirtualMachine::LogMotionData(const std::string& data) {
+    if (!m_logFileStream.is_open()) {
+        std::cerr << "Log file is not open!" << std::endl;
+        return;
+    }
+
+    // Check if writing the data would exceed the file size limit
+    if (m_currentFileSize + data.length() > m_maxFileSize) {
+        OpenNewLogFile(); // Open a new log file if the limit is reached
+    }
+
+    m_logFileStream << data; // Append the data to the file
+    m_currentFileSize += data.length(); // Update the current file size
 }
 
 

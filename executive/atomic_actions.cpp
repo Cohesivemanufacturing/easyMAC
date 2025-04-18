@@ -6,17 +6,15 @@ Atomic actions definitions
 
 Atomic_action *add_action(Atomic_action *node)
 {
-	// create a new node p
-	Atomic_action *p;
-	p = new Atomic_action;
-	*p = Atomic_action();
+    // create a new node p
+    Atomic_action *p = new Atomic_action;
 
-	p->next = NULL;
+    p->next = NULL;
 
-	// inform "node" that its next node is "p" 
-	node->next = p;
+    // inform "node" that its next node is "p" 
+    node->next = p;
 
-	return p;
+    return p;
 
 }
 

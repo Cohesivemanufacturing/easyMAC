@@ -515,10 +515,6 @@ void thread_winsocket(int portnb)
 */
 void thread_cloudNC()
 {
-	// log a new console
-	cnConsole = new CConsoleLogger();
-	cnConsole->Create("Program file interpreter console");
-
 	// initilization and settings of the CloudNC controller 
 	VirtualMachine *cloudController = Executive::initCloudNC();  // no mech. structure or SLD graphics needed
 	
@@ -613,10 +609,11 @@ int main(int argc, char ** argv)
 	// starts the executive structures and thread handler
 	executive = Executive::initExecutive();
 
-	// set log files and root folders
-	Executive::setHistoryLogFile("./res/interpreter/logs/history.log");
-	Executive::setActionsLogFile("./res/interpreter/logs/actions.log");
-	Executive::setRootFolder("./res/interpreter/programs/");
+	// set log files 
+	Executive::setActionsLogFile("./out/actions.log");
+
+	// set cloudNC log file
+	// Executive::setCloudNCLogFile("cloudNC.log");
 
 	// loads the system initial configurations
 	if (Executive::loadConfiguration("./res/executive/config/easyMAC.ini"))

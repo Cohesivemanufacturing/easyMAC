@@ -58,7 +58,6 @@ public:
 	static void       Exeparser::loadConfigFileAction(char* filename);
 	static void       Exeparser::loadProgramFileAction(char* filename);
 	static void		  Exeparser::setActionsLogAction(char* stat);
-	static void       Exeparser::setHistoryLogAction(char* stat);
 	static void       Exeparser::setProgramAction(char* filename);
 	static void		  Exeparser::setFeedModeAction(char* mode);
 	static void       Exeparser::setPlaneAction(char* plane);

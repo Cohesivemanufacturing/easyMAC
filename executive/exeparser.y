@@ -141,8 +141,8 @@ systemcommand  : HELP                             {Exeparser::help();}
 setcommand     : PROGRAM			  FILENAME	  {Exeparser::loadProgramFileAction($2);}
 			   | CONFIGURATION		  FILENAME	  {Exeparser::loadConfigFileAction($2);}
 			   | ACTIONS_LOG          STRING	  {Exeparser::setActionsLogAction($2);}
-			   | HISTORY_LOG          STRING	  {Exeparser::setHistoryLogAction($2);}
 			   | PROGRAM			  STRING      {Exeparser::setProgramAction($2);}
+			   | PROGRAM			  FILENAME    CONFIGURATION FILENAME {Exeparser::loadConfigFileAction($4); Exeparser::loadProgramFileAction($2);}
 			   | T_H NUMBER  '='	  expression  {Exeparser::setHvariableAction($2, $4);}
 			   | MOTION_MODE		  STRING	  {Exeparser::setMotionModeAction($2);}
 			   | MOTION_PLANE		  STRING	  {Exeparser::setPlaneAction($2);}

@@ -14,6 +14,7 @@
 #include <vector>
 #include <map>
 #include <GL/glew.h>
+#include <mutex>
 
 #include "display.h"
 #include "shader.h"
@@ -294,6 +295,17 @@ private:
 	int  m_fmax = pow(2, m_M);							 // overflowing value of the velocity register
 	int  m_rmax;							             // overflowing value of the rendering register
 	int  m_actTol = 10;								     // interpolation arc tolerace
+
+	// Logging-related members
+	std::ofstream m_logFileStream;
+	std::string m_logFileBaseName;
+	int m_logFileIndex = 0;
+	size_t m_currentFileSize = 0;
+	const size_t m_maxFileSize = 1024 * 1024; // 1MB
+	std::mutex m_logFileMutex;
+
+	void OpenNewLogFile();
+	void LogMotionData(const std::string& data);
 };
 
 

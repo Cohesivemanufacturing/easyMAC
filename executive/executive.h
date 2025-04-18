@@ -30,6 +30,7 @@
 #include <iostream> 
 #include <string>
 #include <sstream>           // std::stringstream
+#include <filesystem>        // Include the filesystem header
 
 #include "parson.h"          // deprecated
 
@@ -157,34 +158,7 @@ public:
 	static inline void disable() { m_isEnabled = false; }
 
 	// log files
-	static inline void setHistoryLogFile(char* fileName)
-	{
-		// save history file name
-		historyFileName = fileName;	
 
-		// gratiously try to open the file and clear it
-		try {
-			fclose(fopen(historyFileName, "w+"));
-		}
-		catch (const std::exception& e) {
-			// caught by reference to base
-			std::cout << " a standard exception was caught, with message '"
-				<< e.what() << "'\n";
-		}
-	}
-	static inline void enableHistoryLog() 
-	{
-		if (historyFileName != NULL) {
-			m_logHistory = true;
-		}
-	}
-	static inline void disableHistoryLog()
-	{
-		if(m_logHistory)
-		{
-			m_logHistory = false;
-		}
-	}
 	static inline void setActionsLogFile(char* fileName)
 	{
 		// save actions file name
@@ -192,7 +166,18 @@ public:
 
 		// gratiously try to open the file and clear it
 		try {
-			fclose(fopen(actionsFileName, "w+"));
+			// Use filesystem to create directories if they don't exist
+			std::filesystem::path filePath(actionsFileName);
+			if (filePath.has_parent_path()) {
+				std::filesystem::create_directories(filePath.parent_path());
+			}
+
+			FILE* file = fopen(actionsFileName, "w"); // Open in write mode to clear the file
+			if (file == NULL) {
+				std::cerr << "Error creating actions log file: " << actionsFileName << std::endl;
+				return;
+			}
+			fclose(file);
 		}
 		catch (const std::exception& e) {
 			// caught by reference to base
@@ -213,12 +198,6 @@ public:
 		{
 			m_logActions = false;
 		}
-	}
-
-	// Root folder
-	static inline void setRootFolder(char* fileName) 
-	{
-		rootFolderName = fileName;
 	}
 
 	// parseProgram thread states
@@ -381,9 +360,7 @@ private:
 	static Winsocket      *winsocket;           // pointer to the windows socket to receive easyMAC commands
 	static VirtualMachine *cloudNCVM;           // pointer to the virtualMachine object
 	static Winsocket      *cloudNCsocket;       // pointer to the windows socket to send cloudMAC compiled motion streams 
-	static char			  *historyFileName;     // pointer to the history log file name
 	static char			  *actionsFileName;     // pointer to the atomic actions log file name
-	static char           *rootFolderName;      // pointer to the root file name of the program (can be modified by the user in the future)
 	static char           *programFileName;     // pointer to the program file name
 	
 	// thread state variables
@@ -411,7 +388,6 @@ private:
 	static void Executive::loadProgramFileAction(Atomic_action* node);
 	static void Executive::loadConfigFileAction(Atomic_action* node);
 	static void Executive::setActionsLogAction(Atomic_action* node);
-	static void Executive::setHistoryLogAction(Atomic_action* node);
 	static void Executive::setProgramAction(Atomic_action* node);
 	static void Executive::setSeqNumberAction(Atomic_action* node);
 	static void Executive::setFeedModeAction(Atomic_action* node);
@@ -448,4 +424,4 @@ private:
 
 	// other private members
 	static void Executive::updateTargetPositionAction(Atomic_action *node);
-}; 
+};

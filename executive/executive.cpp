@@ -391,9 +391,7 @@ VirtualMachine *Executive::virtualMachine = NULL;
 Winsocket      *Executive::winsocket = NULL;
 VirtualMachine *Executive::cloudNCVM = NULL;
 Winsocket      *Executive::cloudNCsocket = NULL;
-char           *Executive::historyFileName = NULL;
 char           *Executive::actionsFileName = NULL;
-char           *Executive::rootFolderName = NULL;
 char           *Executive::programFileName = NULL;
 
 // initialize thread state variables
@@ -773,10 +771,6 @@ void Executive::logAtomicActions(void)
 
 	if (m_logActions)
 	{
-		// clear atomic actions file
-		if (tail->action != PRINT_ACTION)
-			fclose(fopen(actionsFileName, "w+"));
-
 		// log atomic actions
 		while (tail != head)
 		{
@@ -786,10 +780,6 @@ void Executive::logAtomicActions(void)
 			// log next action
 			tail = tail->next;
 		}
-
-		// concatenate the actions_file to the history_file
-		if (m_logHistory)
-			file_concatenate(actionsFileName, historyFileName);
 	}
 }
 
@@ -805,9 +795,6 @@ void Executive::actionHandler(Atomic_action* node)
 		break;
 	case SET_ACTIONS_LOG:
 		setActionsLogAction(node);
-		break;
-	case SET_HISTORY_LOG:
-		setHistoryLogAction(node);
 		break;
 	case SET_PROGRAM:
 		setProgramAction(node);
@@ -1116,7 +1103,6 @@ void Executive::loadProgramFileAction(Atomic_action* node)
 {
 	// concatenate root folder directory with filename
 	static char filename[64];
-	strcpy(filename, rootFolderName);
 	strcat(filename, node->filename);
 
 	// if not parsing a program
@@ -1140,7 +1126,6 @@ void Executive::loadConfigFileAction(Atomic_action* node)
 
 	// root folder directory with filename
 	static char filename[64];
-	strcpy(filename, "./res/executive/config/");
 	strcat(filename, node->filename);
 
 	// clear the loadConfigurationfile action (avoid infinite loop)
@@ -1159,19 +1144,6 @@ void Executive::setActionsLogAction(Atomic_action* node)
 		break;
 	case ACTION_LOG_DISABLE:
 		disableActionLog();
-		break;
-	}
-}
-
-void Executive::setHistoryLogAction(Atomic_action* node)
-{
-	switch (node->mode)
-	{
-	case HISTORY_LOG_ENABLE:
-		enableHistoryLog();
-		break;
-	case ACTION_LOG_DISABLE:
-		disableHistoryLog();
 		break;
 	}
 }

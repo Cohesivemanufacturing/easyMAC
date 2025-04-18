@@ -120,7 +120,7 @@ static void comment(void);
 
 [0-9]+\.[0-9]+ 				            {exelval.fnum = atof(exetext); return FNUMBER;} 
 [0-9]+                 					{exelval.num  = atoi(exetext); return NUMBER;}
-[a-zA-Z0-9_]+\.[a-zA-Z]+   			    {// we have to copy because we can't rely on exetext not changing underneath us:
+([a-zA-Z]:)?([\\/]|[.]{1,2}[\\/])?([a-zA-Z0-9_.\-\\/]+)\.[a-zA-Z0-9_]+ {// we have to copy because we can't rely on exetext not changing underneath us:
 										 char *res = new char[strlen(exetext) + 1];
 										 strcpy(res, exetext);
 										 exelval.sval = res;
