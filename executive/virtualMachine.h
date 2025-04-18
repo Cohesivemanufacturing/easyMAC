@@ -234,6 +234,7 @@ private:
 	void CreateBodyConstraints (const std::string& line);
 	void CreateJoint(const std::string& line);
 	void calcTransforms();
+	void DeleteExistingLogFiles(); // Add declaration here
 	
 	// mdf parsing
 	Body ParseBody(const std::string& token, bool hasTexture);
